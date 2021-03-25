@@ -3,14 +3,27 @@
  * Обязательно использовать оператор return.                                            *
  ****************************************************************************************/
  
-function arithmaticOp(a = 10, b = 5){
-	let addition = a + b;
-	let subtraction = a - b;
-	let mult = a * b;
-	let div = a / b;
-	return 'Резултат сложения введенных параметров ' + addition + ', вычитания ' + subtraction
-	        + ', умножения ' + mult + ', деления ' + div + '.';	
+ // сложение
+function addition(a = 10, b = 5){
+	return 'Резултат сложения введенных параметров ' + (a + b) + '.';	
  } 
  
- console.log(arithmaticOp(20, 4));
+ // вычитание
+ function subtraction(a = 10, b = 5){
+	return 'Резултат вычитания введенных параметров ' + (a - b) + '.';
+ }
  
+ // умножение
+ function mult (a = 10,  b = 5) {
+	return 'Резултат умножения введенных параметров ' + (a * b) + '.'; 
+ }
+ 
+ // деление
+ function division (a = 10, b = 5) {
+	 return 'Резултат деления введенных параметров ' + (a / b) + '.';
+ }
+ 
+ console.log(addition());
+ console.log(subtraction());
+ console.log(mult());
+ console.log(division());
