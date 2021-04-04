@@ -47,7 +47,7 @@
  };
  
  //проверяем список товаров в корзине --- список пуст
- console.log(basket.listProduct);
+ console.log(basket.listProduct);''
  //проверяем количество товаров -- товаров ноль
  console.log(basket.ammountProduct());
  //считаем стоимость
