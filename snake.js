@@ -1,4 +1,14 @@
 "use strict";
+
+/*
+ * Задание 1. Выводить счёт в режиме реального времени.
+ */
+
+/*
+ * Задание 2.  Генерировать временные препятствия на поле.
+ */
+
+// настройки игры
 const settings = {
     rowsCount: 21,
     colsCount: 21,
@@ -6,28 +16,34 @@ const settings = {
     winFoodCount: 50,
 };
 
+// получение настроек и провверка настроек
 const config = {
     settings,
     init(userSettings = {}) {
         Object.assign(this.settings, userSettings);
     },
-
+    
+    // строки
     getRowsCount() {
         return this.settings.rowsCount;
     },
-
+    
+    //колонки
     getColsCount() {
         return this.settings.colsCount;
     },
-
+    
+    // скорость
     getSpeed() {
         return this.settings.speed;
     },
 
+    // счет для победы
     getWinFoodCount() {
         return this.settings.winFoodCount;
     },
 
+    //валидация настроек игры
     validate() {
         const result = {
             isValid: true,
@@ -58,10 +74,12 @@ const config = {
     },
 };
 
+// Карта
 const map = {
     cells: null, // {x1_y1: td, x1_y2: td}
     usedCells: null,
 
+    // построение игрового поля
     init(rowsCount, colsCount) {
         const table = document.getElementById('game');
         table.innerHTML = '';
@@ -84,7 +102,8 @@ const map = {
         }
     },
 
-    render(snakePointsArray, foodPoint) {
+    //отображаем объекты на игровом поле
+    render(snakePointsArray, foodPoint, stonePoint) {
         for (const cell of this.usedCells) {
             cell.className = 'cell';
         }
@@ -100,28 +119,38 @@ const map = {
         const foodCell = this.cells[`x${foodPoint.x}_y${foodPoint.y}`];
         foodCell.classList.add('food');
         this.usedCells.push(foodCell);
+        
+        //задание два. получаем элемент ячейки с камнем.
+        const stoneCell = this.cells[`x${stonePoint.x}_y${stonePoint.y}`];
+        stoneCell.classList.add('stone');
+        this.usedCells.push(stoneCell);
     },
 };
 
+//змейка
 const snake = {
     body: null,
     direction: null,
     lastStepDirection: null,
 
+    // инициализируем змейку
     init(startBody, direction) {
         this.body = startBody;
         this.direction = direction;
         this.lastStepDirection = direction;
     },
-
+    
+    // массив змейки
     getBody() {
         return this.body;
     },
 
+    // предыущее направление змейки
     getLastStepDirection() {
         return this.lastStepDirection;
     },
 
+    //направление змейки
     setDirection(direction) {
         this.direction = direction;
     },
@@ -180,6 +209,27 @@ const food = {
     },
 };
 
+// задание 2. объект камень
+const stone = {
+    x: null,
+    y: null,
+    getStoneCoordinates() {
+        return {
+            x: this.x,
+            y: this.y,
+        }
+    },
+    
+    setStoneCoordinates(point) {
+        this.x = point.x;
+        this.y = point.y;
+    },
+    
+    isOnStonePoint(point) {
+        return this.x === point.x && this.y === point.y;
+    },
+};
+
 const status = {
     condition: null,
 
@@ -204,12 +254,39 @@ const status = {
     },
 };
 
+// задание 1
+const score = {
+    count: null,
+    countEl: null,
+
+    init() {
+        this.countEl = document.getElementById('score-count');
+        this.drop();
+    },
+
+    increment() {
+        this.count++;
+        this.render();
+    },
+
+    drop() {
+        this.count = 0;
+        this.render();
+    },
+
+    render() {
+        this.countEl.textContent = this.count;
+    }
+};
+
 const game = {
     config,
     map,
     snake,
     food,
+    stone,
     status,
+    score,
     tickInterval: null,
 
     init(userSettings) {
@@ -224,15 +301,20 @@ const game = {
         }
 
         this.map.init(this.config.getRowsCount(), this.config.getColsCount());
-
+        
+        // задание 1
+        this.score.init();
         this.setEventHandlers();
         this.reset();
     },
 
     reset() {
         this.stop();
+        this.score.drop();
         this.snake.init(this.getStartSnakeBody(), 'up');
         this.food.setCoordinates(this.getRandomFreeCoordinates());
+        //задание 2 ставим камень на карту
+        this.stone.setStoneCoordinates(this.getRandomFreeCoordinates());
         this.render();
     },
 
@@ -261,6 +343,7 @@ const game = {
 
         if (this.food.isOnPoint(this.snake.getNextStepHeadPoint())) {
             this.snake.growUp();
+            this.score.increment();
             this.food.setCoordinates(this.getRandomFreeCoordinates());
 
             if (this.isGameWon()) {
@@ -302,7 +385,7 @@ const game = {
     },
 
     getRandomFreeCoordinates() {
-        const exclude = [this.food.getCoordinates(), ...this.snake.getBody()];
+        const exclude = [this.stone.getStoneCoordinates(), this.food.getCoordinates(), ...this.snake.getBody()];
 
         while (true) {
             const rndPoint = {
@@ -327,7 +410,7 @@ const game = {
     },
 
     render() {
-        this.map.render(this.snake.getBody(), this.food.getCoordinates());
+        this.map.render(this.snake.getBody(), this.food.getCoordinates(), this.stone.getStoneCoordinates());
     },
 
     playClickHandler() {
@@ -379,4 +462,4 @@ const game = {
     },
 };
 
-game.init();
+window.onload = game.init();
