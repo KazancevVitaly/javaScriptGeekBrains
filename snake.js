@@ -341,6 +341,7 @@ const game = {
             return this.finish();
         }
         
+        //если столкнется с камнем --- конец игры
         if (this.snake.getNextStepHeadPoint().x === this.stone.getStoneCoordinates().x && 
            this.snake.getNextStepHeadPoint().y === this.stone.getStoneCoordinates().y) {
             return this.finish();
