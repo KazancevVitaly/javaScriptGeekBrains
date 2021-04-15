@@ -38,17 +38,15 @@
 		 }
 		 return n;
 	 },
-	 //стоимость товаров в корзине
-	 basketPrice: 0,
 	 //метод подсчета стоимости товаров в корзине
-	 countBasketPrice() {
+	 countBasketPrice(basketPrice = 0) {
 		 for (i = 0; i < this.listProduct.length; i++){
-			 this.basketPrice = this.basketPrice + 
+			 basketPrice = basketPrice + 
 			 this.listProduct[i].price * this.listProduct[i].position;
 		 }
 		 // Наполненная должна выводить «В корзине: n товаров на сумму m рублей»
 		 return '"В корзине ' + this.ammountProduct() + ' товаров стоимостью '+ 
-				this.basketPrice + '$';
+				basketPrice + '$"';
 	 },
 	 
 	 basketEl: document.getElementById('basket'),
