@@ -340,11 +340,17 @@ const game = {
         if (!this.canMakeStep()) {
             return this.finish();
         }
+        
+        if (this.snake.getNextStepHeadPoint().x === this.stone.getStoneCoordinates().x && 
+           this.snake.getNextStepHeadPoint().y === this.stone.getStoneCoordinates().y) {
+            return this.finish();
+        }
 
         if (this.food.isOnPoint(this.snake.getNextStepHeadPoint())) {
             this.snake.growUp();
             this.score.increment();
             this.food.setCoordinates(this.getRandomFreeCoordinates());
+            this.stone.setStoneCoordinates(this.getRandomFreeCoordinates());
 
             if (this.isGameWon()) {
                 this.finish();
