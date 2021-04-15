@@ -37,12 +37,12 @@
 		 return this.listProduct.length;
 	 },
 	 //стоимость товаров в корзине
-	 basketPrice: 0,
 	 //метод подсчета стоимости товаров в корзине
-	 countBasketPrice() {
-		 for (i = 0; i < this.listProduct.length; i++){
-			 this.basketPrice = this.basketPrice + this.listProduct[i].price;
+	 countBasketPrice(basketPrice = 0) {
+		 for (i = 0; i < this.listProduct.length; i++) {
+			 basketPrice += this.listProduct[i].price;
 		 }
+         return basketPrice;
 	 },
  };
  
@@ -53,7 +53,7 @@
  //считаем стоимость
  basket.countBasketPrice();
  // стоимость - ноль
- console.log(basket.basketPrice);
+ console.log(basket.countBasketPrice());
  
  //добавляем товары в корзину
  basket.listProductPush(product);
@@ -64,8 +64,8 @@
  // количество товаров тепер равно 3
  console.log(basket.ammountProduct());
  // считаем стоимость
- basket.countBasketPrice();
+ console.log(basket.countBasketPrice());
  // стоимость равна 1204
- console.log(basket.basketPrice);
+
  
  
