@@ -6,22 +6,22 @@
  
  // сложение
 function addition(a = 10, b = 5){
-	return `Результат сложения введенных параметров ${(a + b)}.` ;	
+	return (a + b);	
  } 
  
  // вычитание
  function subtraction(a = 10, b = 5){
-	return `Результат вычитания введенных параметров  ${(a - b)}.`;
+	return (a - b);
  }
  
  // умножение
  function mult (a = 10,  b = 5) {
-	return `Результат умножения введенных параметров ${(a * b)}.`; 
+	return (a * b); 
  }
  
  // деление
  function division (a = 10, b = 5) {
-	 return `Результат деления введенных параметров ${(a / b)}.`;
+	 return (a / b);
  }
  
 
@@ -30,5 +30,5 @@ console.log(functionExecutionResult);
 
  console.log(addition());
  console.log(subtraction());
- console.log(mult());
+ console.log(mult(addition(6, 7), addition(5, 9)));
  console.log(division());
